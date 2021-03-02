@@ -1,0 +1,33 @@
+
+# configuration file
+
+# Directories containing the corresponding Nifti files should have the same name as the class_names 
+# If 1 class is given, a one vs. all classification will be performed. Variable should be a list, not a string.
+class_names: ['T1','T1KM'] 
+onevsall: False # for sub-classifications
+subclasses: True
+parentclass: False
+# Path to the classes directories 
+root_dir:  '/media/e210/Samsung_T5/Cinderella_nifti/subset'
+checkpoint_dir: '/home/e210/Python/mrclass_resnet/mrclass_resnet/checkpoints/mr-hnc'
+
+run_3d: False #trains a 3d resnet if True
+nr_slices: 50 # only in 3d mode
+spatial_size: 224 # 
+scan:  3 # for 2d mode; 2:axial, 1:coronal, 0:sagittal, 3:scan aquisation plane
+
+training_split: 0.8 # split for training/validation
+in_channels: 1 # number of channels. 1 for MRI.
+batch_size : 50
+num_epochs : 10
+num_workers: 4 # number of subprocesses for the data loader
+learning_rate: 0.001 # initial learning rate
+momentum: 0.9 # momentum for SGD
+data_aug: False # if True runs simple data augmentation operations. See data_aumentation.py
+step_size: 7
+gamma: 0.1
+
+show_results: True # prints a small batch after training is complete
+num_images: 6
+remove_corrupt: True # removes any images in case of loading errors
+
