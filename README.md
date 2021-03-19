@@ -13,3 +13,13 @@ A one-vs-all classification approach was implemented, which allows MR-Class to h
 * (Optional) Create a virtual environment for this repository and activate it 
 * Run ```python setup.py install```
 
+# Dataset
+
+
+
+# Command line script usage
+
+To test the network, a configuration file was prepared, which is found in the base folder. Inside the scripts folder, run 
+```
+python run_test_mrclass.py --config path/to/config/file
+```
