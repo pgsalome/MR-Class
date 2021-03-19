@@ -10,7 +10,7 @@ A one-vs-all classification approach was implemented, which allows MR-Class to h
 
 * Clone or download this repository
 * Open a terminal and cd into ```mrclass_resnet``` 
-* (Optional) Create a virtual environment for this repository and activate it 
+* (Optional) If you are using an environment manager, create a virtual environment for this repository and activate it 
 * Run ```python setup.py install```
 
 # Dataset
@@ -23,3 +23,4 @@ To test the network, a configuration file was prepared, which is found in the ba
 ```
 python run_test_mrclass.py --config path/to/config/file
 ```
+The application will try to automatically download the pre-trained model weights and necessary binary files. If somehow this fails, please download the files from [here](link to the weights) in the base folder. 
