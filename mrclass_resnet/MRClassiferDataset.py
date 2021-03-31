@@ -28,9 +28,9 @@ class MRClassifierDataset(Dataset):
     def __len__(self):
         return len(self.list_images)
     
-    def get_random(self):
+    def get_random(self,fa = False):
         
-        if self.run_3d:
+        if self.run_3d or fa:
             image = np.random.randn(self.spatial_size, self.spatial_size,self.nr_slices).astype('f')
         else:
             image = np.random.randn(self.spatial_size, self.spatial_size).astype('f')
@@ -54,8 +54,11 @@ class MRClassifierDataset(Dataset):
             print ('error loading {0}'.format(img_name))
             if self.remove_corrupt and os.path.isfile(img_name):
                 os.remove(img_name)
-            image, class_cat = self.get_random()
+            image, class_cat = self.get_random(fa=True)
             
+        if not np.any(image):
+            image, class_cat = self.get_random(fa=True)
+        
         if len(image.shape)>3:
             image = image[:,:,:,0]
             #print('4D images are not supported;{} is ignored'.format(img_name))

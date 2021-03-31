@@ -1,0 +1,17 @@
+README.md
+setup.py
+MR_CLASS.egg-info/PKG-INFO
+MR_CLASS.egg-info/SOURCES.txt
+MR_CLASS.egg-info/dependency_links.txt
+MR_CLASS.egg-info/not-zip-safe
+MR_CLASS.egg-info/requires.txt
+MR_CLASS.egg-info/top_level.txt
+mrclass_resnet/DicomConvert.py
+mrclass_resnet/MRClassiferDataset.py
+mrclass_resnet/__init__.py
+mrclass_resnet/data_augmentation.py
+mrclass_resnet/test_mrclass.py
+mrclass_resnet/train.py
+mrclass_resnet/train_model.py
+mrclass_resnet/transforms.py
+mrclass_resnet/utils.py

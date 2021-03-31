@@ -8,7 +8,7 @@ import torch.optim as optim
 from torch.optim import lr_scheduler
 from torchvision import models, transforms
 import matplotlib.pyplot as plt
-from mrclass_resnet.transforms import ZscoreNormalization, ToTensor, resize_3Dimage, resize_2Dimage
+from mrclass_resnet.transforms import ZscoreNormalization, ToTensor, resize_3Dimage, resize_2Dimage, crop_background, check_orientation
 from mrclass_resnet.MRClassiferDataset import MRClassifierDataset
 from torch.utils.data import DataLoader
 from mrclass_resnet.utils import  get_dataset_sizes, get_train_images
@@ -77,15 +77,17 @@ def train(config):
     if run_3d:
         data_transforms = transforms.Compose(
                 
-                        [
-                        resize_3Dimage(spatial_size,nr_slices),
+                        [check_orientation(),
+                         crop_background(),
+                         resize_3Dimage(spatial_size,nr_slices),
                          ZscoreNormalization(),
                          ToTensor()])
     else:
         data_transforms = transforms.Compose(
                 
-                        [
-                        resize_2Dimage(spatial_size),
+                        [check_orientation(),
+                         crop_background(),
+                         resize_2Dimage(spatial_size),
                          ZscoreNormalization(),
                          ToTensor()])    
     if data_aug:

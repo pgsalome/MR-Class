@@ -8,8 +8,8 @@ onevsall: False # for sub-classifications
 subclasses: True
 parentclass: False
 # Path to the classes directories 
-root_dir:  '/media/e210/Samsung_T5/Cinderella_nifti/subset'
-checkpoint_dir: '/home/e210/Python/mrclass_resnet/mrclass_resnet/checkpoints/mr-hnc'
+root_dir:  '/media/pgsalome/2A3A8A353A89FE57/projects/TCGA_GBM_MR_CLass_nii'
+checkpoint_dir: '/home/pgsalome/git/MR-Classf/mrclass_resnet/checkpoints/mr-hnc'
 
 run_3d: False #trains a 3d resnet if True
 nr_slices: 50 # only in 3d mode

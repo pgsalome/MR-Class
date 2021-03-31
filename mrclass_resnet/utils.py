@@ -1,11 +1,10 @@
 import os
-import subprocess as sp
+
 import glob
 import math
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy import ndimage
-#import pdb
 import yaml
 import torch
 import pandas as pd
@@ -17,7 +16,6 @@ import random
 
 def get_dataset_sizes(list_images,class_names,
                       training_split,subclasses,parentclass):  
-                      
     count = [0] * len(class_names)   
     for i in range(len(class_names)):                                                   
         for item in list_images:
@@ -44,16 +42,7 @@ def get_images(list_images,direction):
         l.append(image)        
     return l
 
-def neck_removal(img_name):
-        
-        cmd = (('robustfov -i {}').format(img_name))
-        sp.check_output(cmd, shell=True)
-def reorient(img_name):
-    cmd = (("fslreorient2std {0} {1}").format(img_name, img_name))
-    sp.check_output(cmd, shell=True)
-        
 def get_label(name, class_names):
-    
     if class_names[-1] == '@lL':
         if class_names[0] == name:
             label = 0
@@ -76,12 +65,8 @@ def check_size(list_images):
 
 def show_batchedSlices(sample_batched,nr_of_slices):
     """Show labeled slices"""
-
     images_batch = sample_batched['image']
-    #pdb.set_trace()
     for i in range(images_batch.size(0)):
-        #s=scan[i]
-        #show_slices(images_batch[i,:,:,:].numpy(),s,nr_of_slices)
         show_2dimage(images_batch[i,:,:,])
         
         
@@ -89,10 +74,7 @@ def show_batchedSlices(sample_batched,nr_of_slices):
 def show_2dimage(i):
     """Show labeled slices"""
     image=torch.squeeze(i)
-  
     plt.figure()
-    
-    #pdb.set_trace()
     plt.imshow(image,cmap='gray')
     # pause a bit so that plots are updated
     plt.pause(0.001)
@@ -101,12 +83,8 @@ def show_2dimage(i):
 
 def show_slices(i,Scan,nr_of_slices=4,label=[1,0],spacing=(1.5,1.5,1.5)):
     """Show labeled slices"""
-    
     image=torch.squeeze(i)
-    #plt.tight_layout()
     plt.figure()
-    
-    #pdb.set_trace()
     for i in range(nr_of_slices):
 
         ms=math.ceil(image.shape[0]/2)
@@ -121,7 +99,6 @@ def show_slices(i,Scan,nr_of_slices=4,label=[1,0],spacing=(1.5,1.5,1.5)):
         
 def subfiles(f, modalities, join=True, prefix=None, suffix=None, sort=True):
     imageList=[]
-    
     for j, m in enumerate(modalities):
         folder= f +'/'+m
         if join:
@@ -174,13 +151,12 @@ def load_checkpoint(filepath):
     model.load_state_dict(checkpoint['state_dict'])
     for parameter in model.parameters():
         parameter.requires_grad = False
-
     model.eval()
     return model,checkpoint['class_names'],checkpoint['scan_plane']
 
 def image_loader(img_name,data_transforms):
     """load image, returns cuda tensor"""
-    #pdb.set_trace()
+
     converter = DicomConverters(img_name, ext='.nii.gz')
     niftiImage=converter.dcm2niix_converter(compress=True)
     image = nib.load(niftiImage).get_data()
@@ -195,8 +171,6 @@ def image_loader(img_name,data_transforms):
     return image.cuda()  #assumes that you're using GPU
      
 def extract_middleSlice(image, scan):
-    
-    
     x,y,z = image.shape
     s = smallest(x,y,z)
     if (s==z and scan == 3) or scan == 2:
@@ -209,10 +183,7 @@ def extract_middleSlice(image, scan):
         ms= math.ceil(image.shape[0]/2)-1
         return image[ms, :, :].astype('float32')
     
-    
-    
 def smallest(num1, num2, num3):
-    
     if (num1 < num2) and (num1 < num3):
         smallest_num = num1
     elif (num2 < num1) and (num2 < num3):
@@ -269,7 +240,6 @@ def visualize_model(model,dataloaders,class_names,device, num_images=6,checkpoin
             model.train(mode=was_training)
             
 def plot_cm(csv):
-
     df = pd.read_csv(csv,index_col=0).astype(float)
     df_conf_norm = df/ df.sum(axis=1)
     
@@ -280,15 +250,12 @@ def plot_cm(csv):
     for (i, j), z in np.ndenumerate(df_conf_norm):
         if z > 0.8:
             plt.text(j, i, '{:0.3f}'.format(z), ha='center', va='center',fontsize=24,color='white')
-        # elif z == 0:
-        #     plt.text(j, i, '0', ha='center', va='center',fontsize=24)  
         else:
             plt.text(j, i, '{:0.3f}'.format(z), ha='center', va='center',fontsize=24)
             
     tick_marks = np.arange(len(df_conf_norm.columns))
     plt.xticks(tick_marks, df_conf_norm.columns, rotation=45,fontsize=30)
     plt.yticks(tick_marks, df_conf_norm.index,fontsize=30)
-    #plt.tight_layout()
     plt.ylabel(df_conf_norm.index.name)
     plt.xlabel(df_conf_norm.columns.name)
     
@@ -317,13 +284,3 @@ def get_train_images(list_images,train_class,
         rest = list(set(x for x in list_images if class_names[0] not in x) - set(train_images))
         train_images = train_images + random.sample(rest, train_class[-1])
     return train_images  
-
-def pop_wrong(l,j):
-
-    for i in range(len(l)):
-        if i !=j:
-            try:
-                l.pop(i)
-            except:
-                import pdb
-                pdb.set_trace()

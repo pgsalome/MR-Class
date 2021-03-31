@@ -16,7 +16,7 @@ if __name__ == "__main__":
     parser.add_argument('--config', type = str, help = 'Path to the configuration file', required=True)
     args = parser.parse_args()
     config = load_config(args.config)
-    test(config)
+    #test(config)
 
     
     print('Done')

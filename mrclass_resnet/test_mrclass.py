@@ -8,6 +8,7 @@ from mrclass_resnet.MRClassiferDataset import MRClassifierDataset
 from torch.utils.data import DataLoader
 from collections import defaultdict
 import glob
+import os
 
 def test(config):
     
@@ -22,7 +23,7 @@ def test(config):
     sub_checkpoints = { 'T1': CP_DIR  + '/T1_T1KM.pth'}
     
     root_dir =   config['root_dir']
-    for_inference = glob.glob(root_dir+'/*/*.nii.gz')
+    for_inference = [x for x in glob.glob(root_dir+'/*/*.nii.gz') if not os.path.isdir(x)]
     
     
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -63,13 +64,12 @@ def test(config):
             if labeled[key][i][1] > r:
                 r = labeled[key][i][1]
                 j = i
-        for i in range(len(labeled[key])-1):
-            if i !=j:
-                labeled[key].pop(i)
+        for l in range(len(labeled[key])-1):
+            if l !=j:
+                labeled[key].pop(l)
         predicted_label = labeled[key][0][0]
         true_label = labeled[key][0][2]
         if predicted_label in true_label:
-           
             labeled_correct[key] = labeled[key]
         else:
             labeled_wrong[key]= labeled[key]
@@ -146,19 +146,19 @@ def test(config):
     total_acc = len(labeled_correct)/(len(labeled_correct)+len(labeled_wrong))
     
 
-info = """\
-{'-'*40}
-# Accuracies of the different MR sequence models
-# T1: {T1_acc}
-# T1-Contrast agent: {T1KM_acc}
-# T2: {T2_acc}
-# FLAIR: {FL_acc}
-# ADC: {ADC}
-# SWI: {SWI}
-# '-'*40
-# MR-Class accuracy: {total_acc}
-{'-'*40}
-"""
-
-print(info)
+    info = """\
+    {'-'*40}
+    # Accuracies of the different MR sequence models
+    # T1: {T1_acc}
+    # T1-Contrast agent: {T1KM_acc}
+    # T2: {T2_acc}
+    # FLAIR: {FL_acc}
+    # ADC: {ADC}
+    # SWI: {SWI}
+    # '-'*40
+    # MR-Class accuracy: {total_acc}
+    {'-'*40}
+    """
     
+    print(info)
+        

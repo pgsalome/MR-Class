@@ -1,0 +1,15 @@
+Metadata-Version: 1.2
+Name: MR-CLASS
+Version: 0.0.0
+Summary: MR_contrast classifier
+Home-page: https://github.com/pgsalome/mrclass
+Author: Patrick Salome
+Author-email: p.salome@dkfz.de
+License: Apache 2.0
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering
+Classifier: Operating System :: Unix
+Requires-Python: >=3.5
